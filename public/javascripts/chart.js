@@ -1,4 +1,4 @@
-var N_data=300;
+var N_data=500;
 
 var obj_csv = {
     size:0,
