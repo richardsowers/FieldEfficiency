@@ -116,12 +116,12 @@ function generate(parsedCSV){
   seriesS.tooltipText = "SWATHWIDTH: [bold]{valueY}[/]";
   //seriesS.fillOpacity = 0.3;*/
 
-  var seriesV = chart.series.push(new am4charts.LineSeries());
+  /*var seriesV = chart.series.push(new am4charts.LineSeries());
   seriesV.stroke = am4core.color("#ffff00");
   seriesV.dataFields.valueX = "Time";
   seriesV.dataFields.valueY = "VRYIELDVOL";
   seriesV.name = "VRYieldVolume";
-  seriesV.tooltipText = "VRYIELDVOL: [bold]{valueY}[/]";
+  seriesV.tooltipText = "VRYIELDVOL: [bold]{valueY}[/]";*/
   //seriesV.fillOpacity = 0.3;
 
   var seriesW = chart.series.push(new am4charts.LineSeries());
