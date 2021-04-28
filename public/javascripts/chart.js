@@ -1,4 +1,4 @@
-var N_data=500;
+var N_data=300;
 
 var obj_csv = {
     size:0,
@@ -39,28 +39,24 @@ function csvJSON(csv) {
 
 /*columnData*/
 function normalize(columnData) {
-  var sumD = 0;
-  var sumS = 0;
-  var sumV = 0;
-  var sumW = 0;
-  var sumM = 0;
-
-  for (var i = 0; i < columnData.length; i++) {
-    sumD += columnData[i]["DISTANCE"]; 
-    sumS += columnData[i]["SWATHWIDTH"]; 
-    sumV += columnData[i]["VRYIELDVOL"]; 
-    sumW += columnData[i]["WetMass"]; 
-    sumM += columnData[i]["Moisture"]; 
-  }
-
-  for (var j = 0; j < columnData.length; j++) {
-    columnData[j]["DISTANCE"]=columnData[j]["DISTANCE"]/sumD;
-    columnData[j]["SWATHWIDTH"]=columnData[j]["SWATHWIDTH"]/sumS;
-    columnData[j]["VRYIELDVOL"]=columnData[j]["VRYIELDVOL"]/sumV;
-    columnData[j]["WetMass"]=columnData[j]["WetMass"]/sumW;
-    columnData[j]["Moisture"]=columnData[j]["Moisture"]/sumM;
-  }
-  return columnData;
+  var initialValue = {"DISTANCE":0,"SWATHWIDTH":0,"VRYIELDVOL":0,"WetMass":0, "Moisture":0};
+  var sums = columnData.reduce(function(accumulator,currentValue) {
+    for(var key of Object.keys(currentValue)) {
+      if(key != "Time") {
+        accumulator[key] += currentValue[key];
+      }
+    }
+    return accumulator;
+  },initialValue);
+  
+  var normalized = columnData.map(function(instance) {
+    for (var key of Object.keys(sums)) {
+      instance[key] = instance[key]/sums[key];
+    }
+    return instance;
+  });
+  
+  return normalized;
 }
 
 function generate(parsedCSV){
@@ -121,8 +117,8 @@ function generate(parsedCSV){
   seriesV.dataFields.valueX = "Time";
   seriesV.dataFields.valueY = "VRYIELDVOL";
   seriesV.name = "VRYieldVolume";
-  seriesV.tooltipText = "VRYIELDVOL: [bold]{valueY}[/]";*/
-  //seriesV.fillOpacity = 0.3;
+  seriesV.tooltipText = "VRYIELDVOL: [bold]{valueY}[/]";
+  //seriesV.fillOpacity = 0.3;*/
 
   var seriesW = chart.series.push(new am4charts.LineSeries());
   seriesW.stroke = am4core.color("#ff0000");
